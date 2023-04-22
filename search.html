@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Naya Lab Sequencing Database</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/homepage.css">
+</head>
+<body>
+
+  <div class="header">
+    <h1>Sequencing Database</h1>
+    <p>A <b>database</b> for the Naya Lab</p>
+  </div>
+
+  <div class="navbar">
+    <a href="homepage.html" class="active">Home</a>
+    <a href="search.html">Search</a>
+    <a href="peakvisualization.html">Peak Visualization</a>
+    <a href=".html">IGB Integration</a>
+    <a href="Meg3.html">Research Focus</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+
+  <div class="row">
+    <div class="side">
+      <h2>Input Data</h2>
+        Cell Line: <input type="radio" name="cell_line" value="Proliferation" checked="checked"> Proliferation
+        <input type="radio" name="cell_line" value="Differentiation"> Differentiation
+        <p></p>
+        <label for="chromosome">Choose a Chromosome:</label>
+        <select id="chromosome">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="X">X</option>
+          <option value="Y">Y</option>
+        </select> 
+    </div>
+    <div class="main">
+        <p>This is main</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>This project was developed at Boston University as
+      part of BF768, Spring 2023, G. Benson instructor </p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Boston_University_wordmark.svg/1000px-Boston_University_wordmark.svg.png?20200623211014" alt="H" width="120" height="50">
+    <p>Last revised May 8, 2023</p>
+  </div>
+  <script>
+    $(document).ready(function(){
+        $("#targetbutton").click(function(){
+            let gene=$("#gene").val(); 
+            if (gene == ""){
+                $("#chart_div").empty();
+                alert('Please enter a gene name'); 
+            }
+            else {
+                $.get("https://bioed.bu.edu/cgi-bin/students_23/mkpannu/mkpannu_AJAX.py", 
+                    {selector:"histogram", gene:gene},
+                        function(jsonData){
+                            if (jsonData.length > 1){
+                                $("#chart_div").empty();
+                                draw_chart(jsonData); 
+                            }
+                            else{
+                                $("#chart_div").empty();
+                                $("#chart_div").append(`<p>There was no data for gene name ${gene}</p>`);
+                            }
+                        },
+                        "json" 
+                );
+            }
+            
+        });
+        $("#findgenes").click(function(){
+            let seq=$("#seq").val();
+            if(seq.length < 7 || seq.length > 9){
+                $("#gene_table").empty();
+                alert('Sequence entered is not the specified length of characters'); 
+            }
+            else if(!seq.match(/^[ATCG]*$/)){
+                $("#gene_table").empty();
+                alert('Sequence entered uses characters other than A, T, C or G'); 
+            }
+            else{
+                $.get("https://bioed.bu.edu/cgi-bin/students_23/mkpannu/mkpannu_AJAX.py", 
+                      {selector:"table", seq:seq},
+                      function(data){
+                        if (data.length > 1){
+                            create_table(data); 
+                        }
+                        else {
+                            $("#gene_table").empty();
+                            $("#gene_table").append(`<p>There were no genes matching your sequence ${seq}</p>`);
+                        }
+                      },
+                      "json"
+                );
+            }
+        });
+    });
+
+
+    function draw_chart(jsonData){
+        var gene=$("#gene").val();
+        
+        function drawChart(){
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'name');
+            data.addColumn('number', 'score');
+
+            for (let row = 0; row<jsonData.length; row++) {
+                data.addRow([
+                    jsonData[row][0],
+                    jsonData[row][1]
+                ])
+            }
+
+            var title = 'Histogram of miRNA targeting scores for ' + gene
+            var options = {'title':title}; 
+
+            var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+        
+        drawChart(); 
+        google.charts.setOnLoadCallback(drawChart);
+    }  
+  </script>
+
+</body>
+</html>
