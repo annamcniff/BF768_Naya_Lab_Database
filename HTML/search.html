@@ -4,10 +4,137 @@
   <title>Naya Lab Sequencing Database</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <link rel="stylesheet" href="../style/search.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <style>
+      * {
+      box-sizing: border-box;
+    }
+
+    /* Style the body */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+    }
+
+    /* Header/logo Title */
+    .header {
+      padding: 2px;
+      text-align: center;
+      background: #6495ED;
+      color: White;
+    }
+
+    /* Increase the font size of the heading */
+    .header h1 {
+      font-size: 30px;
+    }
+
+    /* Sticky navbar - toggles between relative and fixed, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed). The sticky value is not supported in IE or Edge 15 and earlier versions. However, for these versions the navbar will inherit default position */
+    .navbar {
+      overflow: hidden;
+      background-color: #333;
+      position: sticky;
+      position: -webkit-sticky;
+      top: 0;
+    }
+
+    /* Style the navigation bar links */
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+
+
+    /* Right-aligned link */
+    .navbar a.right {
+      float: right;
+    }
+
+    /* Change color on hover */
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Active/current link */
+    .navbar a.active {
+      background-color: #666;
+      color: white;
+    }
+
+    /* Column container */
+    .row {  
+      display: -ms-flexbox; /* IE10 */
+      display: flex;
+      -ms-flex-wrap: wrap; /* IE10 */
+      flex-wrap: wrap;
+    }
+
+    /* Create two unequal columns that sits next to each other */
+    /* Sidebar/left column */
+    .side {
+      -ms-flex: 30%; /* IE10 */
+      flex: 30%;
+      background-color: #f1f1f1;
+      padding: 20px;
+    }
+
+    /* Main column */
+    .main {   
+      -ms-flex: 70%; /* IE10 */
+      flex: 70%;
+      background-color: white;
+      padding: 20px;
+    }
+
+    /* Fake image, just for this example */
+    .img {
+      width: 100%;
+      padding: 20px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 5px;
+      text-align: center;
+      background: #ddd;
+    }
+
+
+    #start-position {
+      border:0; 
+      padding:5px;
+      color:#6495ED; 
+      font-weight:bold;
+      width: 80px;
+    }
+
+    #stop-position {
+      border:0; 
+      padding:5px;
+      color:#6495ED; 
+      font-weight:bold;
+      width: 80px;
+    }
+
+    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 700px) {
+      .row {   
+        flex-direction: column;
+      }
+    }
+
+    /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+    @media screen and (max-width: 400px) {
+      .navbar a {
+        float: none;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -21,45 +148,41 @@
     <a href="search.html">Search</a>
     <a href="peakvisualization.html">Peak Visualization</a>
     <a href=".html">IGB Integration</a>
+    <a href="Meg3.html">Research Focus</a>
     <a href="contact.html">Contact Us</a>
   </div>
 
   <div class="row">
     <div class="side">
       <h2>Input Data</h2>
-        <p>Cell Line: <input type="radio" name="cell_line" value="Proliferation" checked="checked"> Proliferation
-        <input type="radio" name="cell_line" value="Differentiation"> Differentiation</p>
-        <p>
-          <label for="chromosome">Choose a Chromosome:</label>
-          <select id="chromosome">
-            <option value="chr1">1</option>
-            <option value="chr2">2</option>
-            <option value="chr3">3</option>
-            <option value="chr4">4</option>
-            <option value="chr5">5</option>
-            <option value="chr6">6</option>
-            <option value="chr7">7</option>
-            <option value="chr8">8</option>
-            <option value="chr9">9</option>
-            <option value="chr10">10</option>
-            <option value="chr11">11</option>
-            <option value="chr12">12</option>
-            <option value="chr13">13</option>
-            <option value="chr14">14</option>
-            <option value="chr15">15</option>
-            <option value="chr16">16</option>
-            <option value="chr17">17</option>
-            <option value="chr18">18</option>
-            <option value="chr19">19</option>
-            <option value="chrX">X</option>
-            <option value="chrY">Y</option>
-          </select> 
-        </p>
-          <label for="position-slider">Positions in Genome: </label>
-          <p>Start: <input type="text" id="start-position"></p>
-          <p> Stop: <input type="text" id="stop-position"></p>
-        
-        <div id="position-slider"></div>
+        Cell Line: <input type="radio" name="cell_line" value="Proliferation" checked="checked"> Proliferation
+        <input type="radio" name="cell_line" value="Differentiation"> Differentiation
+        <p></p>
+        <label for="chromosome">Choose a Chromosome:</label>
+        <select id="chromosome">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="X">X</option>
+          <option value="Y">Y</option>
+        </select> 
     </div>
     <div class="main">
         <p>This is main</p>
@@ -74,10 +197,64 @@
   </div>
   <script>
     $(document).ready(function(){
-      Null
+      $("#summarystats").click(function(){
+        let timepoint=$("input[name=timepoint]:checked").val(); 
+        let chromosome=$("#chromosome").val(); 
+        let start_pos=$("#start-position").val(); 
+        let stop_pos=$("#stop-position").val(); 
+        $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_search.py", 
+          {selector:"summarytable", timepoint:timepoint, chromosome:chromosome, start_pos:start_pos, stop_pos:stop_pos}, 
+          function(data){
+            create_summary_table(data); 
+          }, 
+          "json"
+        ); 
+      }); 
     }); 
 
-    // Focus on how to take text input from slider
+    function create_summary_table(data){
+      let timepoint=$("input[name=timepoint]:checked").val(); 
+      let chromosome=$("#chromosome").val(); 
+      let start_pos=$("#start-position").val(); 
+      let stop_pos=$("#stop-position").val(); 
+      let cell_line=""
+      let replicate=""
+      let start=""
+      let end=""
+      let abs_summit=""
+      let fold_enrichment=""
+      let pvalue=""
+      
+
+      $("#summary-table").empty();
+
+      let example=`<h5>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h5>`
+
+      $("#summary-table").append(example);
+
+
+      if(data!=""){
+        for (let row = 0; row<data.length; row++){
+          cell_line=data[row][0]; 
+          replicate=data[row][1]; 
+          start=data[row][2]; 
+          end=data[row][3]; 
+          abs_summit=data[row][4]; 
+          fold_enrichment=data[row][5]; 
+          pvalue=data[row][6]; 
+
+          table_body_contents += `<tr><td>${cell_line}</td><td>${replicate}</td><td>${start}</td><td>${end}</td><td>${abs_summit}</td><td>${fold_enrichment}</td><td>${pvalue}</td></tr>`;
+        }
+
+        let title = `<h5>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h5>`
+        $("#summary-table").append(title);
+        let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>End</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>p-value</th></tr></thead><tbody>${table_body_contents}</tbody></table>`;
+        $("#summary-table").append(table);
+      }
+    }
+
+
+    //Focus on how to take text input from user and put in slider
     $( function() {
       $( "#position-slider" ).slider({
         range: true,
@@ -93,7 +270,6 @@
       $("#stop-position").val($( "#position-slider" ).slider( "values", 1));  
     });
   </script>
-
 
 </body>
 </html>
