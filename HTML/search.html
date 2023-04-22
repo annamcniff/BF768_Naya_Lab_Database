@@ -32,6 +32,11 @@
       font-size: 30px;
     }
 
+    /* Increase the font size of the heading */
+    .header h3 {
+      font-size: 15px;
+    }
+
     /* Sticky navbar - toggles between relative and fixed, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed). The sticky value is not supported in IE or Edge 15 and earlier versions. However, for these versions the navbar will inherit default position */
     .navbar {
       overflow: hidden;
@@ -106,7 +111,38 @@
       text-align: center;
       background: #ddd;
     }
-
+    button {
+      background-color: DodgerBlue; 
+      color: #fff; /* white; */
+    }
+        
+    /* sets styles for a table, table header cell (th), and a table data cell (td) */
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 15px;
+    }
+        
+    /* sets width for the entire table */
+    table {
+      width: 400px;
+    }
+        
+    /* sets text alignment for a table header cell */
+    th {
+      background-color: #8faee7;
+      text-align: left;
+    }
+        
+    /* sets text alignment for a table data cell */
+    td {
+      text-align: left;
+    }
+        
+    /* overrides default background color for every other table row (tr) */
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
 
     #start-position {
       border:0; 
@@ -227,6 +263,7 @@
       let chromosome=$("#chromosome").val(); 
       let start_pos=$("#start-position").val(); 
       let stop_pos=$("#stop-position").val(); 
+      let table_body_contents = ""; 
       let cell_line=""
       let replicate=""
       let start=""
@@ -234,31 +271,30 @@
       let abs_summit=""
       let fold_enrichment=""
       let pvalue=""
-      
 
       $("#summary-table").empty();
 
-      let example=`<h5>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h5>`
-
-      $("#summary-table").append(example);
-
+      let title = `<h3>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h3>`
+      $("#summary-table").append(title);
 
       if(data!=""){
-        for (let row = 0; row<data.length; row++){
-          cell_line=data[row][0]; 
-          replicate=data[row][1]; 
-          start=data[row][2]; 
-          end=data[row][3]; 
-          abs_summit=data[row][4]; 
-          fold_enrichment=data[row][5]; 
-          pvalue=data[row][6]; 
+        $("#summary-table").append(`<p>Number of peaks found: ${data.length} peaks</p>`);
 
-          table_body_contents += `<tr><td>${cell_line}</td><td>${replicate}</td><td>${start}</td><td>${end}</td><td>${abs_summit}</td><td>${fold_enrichment}</td><td>${pvalue}</td></tr>`;
+        for (let i = 0; i < data.length; i++){
+          cell_line=data[i][0]; 
+          replicate=data[i][1]; 
+          start=data[i][2]; 
+          end=data[i][3]; 
+          abs_summit=data[i][4]; 
+          fold_enrichment=data[i][5]; 
+          pvalue=data[i][6]; 
+
+
+          table_body_contents += `<tr><td>${cell_line}</td><td>${replicate}</td><td>${start}</td><td>${end}</td><td>${abs_summit}</td><td>${fold_enrichment}</td><td>${pvalue}</td></tr>`
         }
 
-        let title = `<h5>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h5>`
-        $("#summary-table").append(title);
-        let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>End</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>p-value</th></tr></thead><tbody>${table_body_contents}</tbody></table>`;
+        let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>Stop</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>pvalue</th></tr></thead><tbody>${table_body_contents}</tbody></table>`
+        
         $("#summary-table").append(table);
       }
     }
