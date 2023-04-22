@@ -4,7 +4,10 @@
   <title>Naya Lab Sequencing Database</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../style/homepage.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="../style/search.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 </head>
 <body>
 
@@ -24,34 +27,39 @@
   <div class="row">
     <div class="side">
       <h2>Input Data</h2>
-        Cell Line: <input type="radio" name="cell_line" value="Proliferation" checked="checked"> Proliferation
-        <input type="radio" name="cell_line" value="Differentiation"> Differentiation
-        <p></p>
-        <label for="chromosome">Choose a Chromosome:</label>
-        <select id="chromosome">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
-          <option value="X">X</option>
-          <option value="Y">Y</option>
-        </select> 
+        <p>Cell Line: <input type="radio" name="cell_line" value="Proliferation" checked="checked"> Proliferation
+        <input type="radio" name="cell_line" value="Differentiation"> Differentiation</p>
+        <p>
+          <label for="chromosome">Choose a Chromosome:</label>
+          <select id="chromosome">
+            <option value="chr1">1</option>
+            <option value="chr2">2</option>
+            <option value="chr3">3</option>
+            <option value="chr4">4</option>
+            <option value="chr5">5</option>
+            <option value="chr6">6</option>
+            <option value="chr7">7</option>
+            <option value="chr8">8</option>
+            <option value="chr9">9</option>
+            <option value="chr10">10</option>
+            <option value="chr11">11</option>
+            <option value="chr12">12</option>
+            <option value="chr13">13</option>
+            <option value="chr14">14</option>
+            <option value="chr15">15</option>
+            <option value="chr16">16</option>
+            <option value="chr17">17</option>
+            <option value="chr18">18</option>
+            <option value="chr19">19</option>
+            <option value="chrX">X</option>
+            <option value="chrY">Y</option>
+          </select> 
+        </p>
+          <label for="position-slider">Positions in Genome: </label>
+          <p>Start: <input type="text" id="start-position"></p>
+          <p> Stop: <input type="text" id="stop-position"></p>
+        
+        <div id="position-slider"></div>
     </div>
     <div class="main">
         <p>This is main</p>
@@ -66,85 +74,26 @@
   </div>
   <script>
     $(document).ready(function(){
-        $("#targetbutton").click(function(){
-            let gene=$("#gene").val(); 
-            if (gene == ""){
-                $("#chart_div").empty();
-                alert('Please enter a gene name'); 
-            }
-            else {
-                $.get("https://bioed.bu.edu/cgi-bin/students_23/mkpannu/mkpannu_AJAX.py", 
-                    {selector:"histogram", gene:gene},
-                        function(jsonData){
-                            if (jsonData.length > 1){
-                                $("#chart_div").empty();
-                                draw_chart(jsonData); 
-                            }
-                            else{
-                                $("#chart_div").empty();
-                                $("#chart_div").append(`<p>There was no data for gene name ${gene}</p>`);
-                            }
-                        },
-                        "json" 
-                );
-            }
-            
-        });
-        $("#findgenes").click(function(){
-            let seq=$("#seq").val();
-            if(seq.length < 7 || seq.length > 9){
-                $("#gene_table").empty();
-                alert('Sequence entered is not the specified length of characters'); 
-            }
-            else if(!seq.match(/^[ATCG]*$/)){
-                $("#gene_table").empty();
-                alert('Sequence entered uses characters other than A, T, C or G'); 
-            }
-            else{
-                $.get("https://bioed.bu.edu/cgi-bin/students_23/mkpannu/mkpannu_AJAX.py", 
-                      {selector:"table", seq:seq},
-                      function(data){
-                        if (data.length > 1){
-                            create_table(data); 
-                        }
-                        else {
-                            $("#gene_table").empty();
-                            $("#gene_table").append(`<p>There were no genes matching your sequence ${seq}</p>`);
-                        }
-                      },
-                      "json"
-                );
-            }
-        });
-    });
+      Null
+    }); 
 
-
-    function draw_chart(jsonData){
-        var gene=$("#gene").val();
-        
-        function drawChart(){
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'name');
-            data.addColumn('number', 'score');
-
-            for (let row = 0; row<jsonData.length; row++) {
-                data.addRow([
-                    jsonData[row][0],
-                    jsonData[row][1]
-                ])
-            }
-
-            var title = 'Histogram of miRNA targeting scores for ' + gene
-            var options = {'title':title}; 
-
-            var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-            chart.draw(data, options);
+    // Focus on how to take text input from slider
+    $( function() {
+      $( "#position-slider" ).slider({
+        range: true,
+        min: 3193259,
+        max: 197108607,
+        values: [ 4000000, 180000000 ],
+        slide: function( event, ui ) {
+          $("#start-position" ).val(ui.values[0]);
+          $("#stop-position").val(ui.values[1]); 
         }
-        
-        drawChart(); 
-        google.charts.setOnLoadCallback(drawChart);
-    }  
+      });
+      $("#start-position").val($( "#position-slider" ).slider( "values", 0 ));  
+      $("#stop-position").val($( "#position-slider" ).slider( "values", 1));  
+    });
   </script>
+
 
 </body>
 </html>

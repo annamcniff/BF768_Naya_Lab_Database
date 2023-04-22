@@ -16,16 +16,19 @@ primary key(cid));
 
 CREATE TABLE PEAK(
 pid integer not null auto_increment,
+cid varchar(5) not null,
 start integer,
 end integer,
 length integer,
 abs_summit integer,
 pileup integer,
-n_log10_pval integer,
 fold_enrichment integer,
-n_log10_qval integer,
+score integer, 
+signalValue float, 
+pvalue float, 
+qvalue float, 
+peak integer,
 sid integer not null,
-cid varchar(2) not null,
 primary key(pid),
 foreign key(sid) references SAMPLE(sid),
 foreign key(cid) references CHROMOSOME(cid)); 
