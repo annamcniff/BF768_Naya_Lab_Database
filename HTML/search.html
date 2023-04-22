@@ -245,11 +245,13 @@
       let fold_enrichment=""
       let pvalue=""
       
+
+      $("#summary-table").empty();
+
       let example=`<h5>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h5>`
 
       $("#summary-table").append(example);
 
-      // $("#summary-table").empty();
 
       if(data!=""){
         for (let row = 0; row<data.length; row++){
@@ -265,8 +267,8 @@
         }
 
         let title = `<h5>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h5>`
-        let table_template= title + `<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>End</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>p-value</th></tr></thead><tbody>${table_body_contents}</tbody></table>`;
-        $("#summary-table").append(table_template);
+        let table= title + `<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>End</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>p-value</th></tr></thead><tbody>${table_body_contents}</tbody></table>`;
+        $("#summary-table").append(table);
       }
     }
 
