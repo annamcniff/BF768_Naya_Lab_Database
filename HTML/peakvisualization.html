@@ -153,84 +153,8 @@
   </div>
   <script>
     $(document).ready(function(){
-        $("#targetbutton").click(function(){
-            let gene=$("#gene").val(); 
-            if (gene == ""){
-                $("#chart_div").empty();
-                alert('Please enter a gene name'); 
-            }
-            else {
-                $.get("https://bioed.bu.edu/cgi-bin/students_23/mkpannu/mkpannu_AJAX.py", 
-                    {selector:"histogram", gene:gene},
-                        function(jsonData){
-                            if (jsonData.length > 1){
-                                $("#chart_div").empty();
-                                draw_chart(jsonData); 
-                            }
-                            else{
-                                $("#chart_div").empty();
-                                $("#chart_div").append(`<p>There was no data for gene name ${gene}</p>`);
-                            }
-                        },
-                        "json" 
-                );
-            }
-            
-        });
-        $("#findgenes").click(function(){
-            let seq=$("#seq").val();
-            if(seq.length < 7 || seq.length > 9){
-                $("#gene_table").empty();
-                alert('Sequence entered is not the specified length of characters'); 
-            }
-            else if(!seq.match(/^[ATCG]*$/)){
-                $("#gene_table").empty();
-                alert('Sequence entered uses characters other than A, T, C or G'); 
-            }
-            else{
-                $.get("https://bioed.bu.edu/cgi-bin/students_23/mkpannu/mkpannu_AJAX.py", 
-                      {selector:"table", seq:seq},
-                      function(data){
-                        if (data.length > 1){
-                            create_table(data); 
-                        }
-                        else {
-                            $("#gene_table").empty();
-                            $("#gene_table").append(`<p>There were no genes matching your sequence ${seq}</p>`);
-                        }
-                      },
-                      "json"
-                );
-            }
-        });
+        
     });
-
-
-    function draw_chart(jsonData){
-        var gene=$("#gene").val();
-        
-        function drawChart(){
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'name');
-            data.addColumn('number', 'score');
-
-            for (let row = 0; row<jsonData.length; row++) {
-                data.addRow([
-                    jsonData[row][0],
-                    jsonData[row][1]
-                ])
-            }
-
-            var title = 'Histogram of miRNA targeting scores for ' + gene
-            var options = {'title':title}; 
-
-            var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-        
-        drawChart(); 
-        google.charts.setOnLoadCallback(drawChart);
-    }  
   </script>
 
 </body>
