@@ -11,8 +11,6 @@ form = cgi.FieldStorage()
 
 print("Content-type: text/html\n")
 
-
-
 if form:
     try:
         connection = pymysql.connect(

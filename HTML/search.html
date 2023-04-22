@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <title>Naya Lab Sequencing Database</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
@@ -155,37 +159,43 @@
   <div class="row">
     <div class="side">
       <h2>Input Data</h2>
-        Cell Line: <input type="radio" name="cell_line" value="Proliferation" checked="checked"> Proliferation
-        <input type="radio" name="cell_line" value="Differentiation"> Differentiation
+        Timepoint: <input type="radio" id="Proliferation" name="timepoint" value="1" checked="checked"> Proliferation
+        <input type="radio" id="Differentiation" name="timepoint" value="2"> Differentiation
         <p></p>
         <label for="chromosome">Choose a Chromosome:</label>
         <select id="chromosome">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
-          <option value="X">X</option>
-          <option value="Y">Y</option>
+          <option value="chr1">1</option>
+          <option value="chr2">2</option>
+          <option value="chr3">3</option>
+          <option value="chr4">4</option>
+          <option value="chr5">5</option>
+          <option value="chr6">6</option>
+          <option value="chr7">7</option>
+          <option value="chr8">8</option>
+          <option value="chr9">9</option>
+          <option value="chr10">10</option>
+          <option value="chr11">11</option>
+          <option value="chr12">12</option>
+          <option value="chr13">13</option>
+          <option value="chr14">14</option>
+          <option value="chr15">15</option>
+          <option value="chr16">16</option>
+          <option value="chr17">17</option>
+          <option value="chr18">18</option>
+          <option value="chr19">19</option>
+          <option value="chr20">20</option>
+          <option value="chrX">X</option>
+          <option value="chrY">Y</option>
         </select> 
+        <p>Enter the desired position range:</p>
+        <p>Start: <input type="text" id="start-position">
+        Stop: <input type="text" id="stop-position"></p>
+        <div id="position-slider"></div>
+        <p><button id="summarystats">Produce Summary Statistics</button></p>
     </div>
     <div class="main">
-        <p>This is main</p>
+        <h2>Summary statistics</h2>
+        <div id="summary-table"></div>
     </div>
   </div>
 
