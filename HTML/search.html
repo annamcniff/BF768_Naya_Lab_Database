@@ -243,6 +243,21 @@
   </div>
   <script>
     $(document).ready(function(){
+
+      //IDEA: Set start position and end position to range of genome before 
+      $("#position-slider").slider({
+        range: true,
+        min: 3193259,
+        max: 197108607,
+        values: [ 4000000, 180000000 ],
+        change: function( event, ui ) {
+          $("#start-position").val(ui.values[0]);
+          $("#stop-position").val(ui.values[1]); 
+        }
+      });
+      $("#start-position").val($( "#position-slider" ).slider( "values", 0 ));  
+      $("#stop-position").val($( "#position-slider" ).slider( "values", 1));  
+      
       $("#summarystats").click(function(){
         let timepoint=$("input[name=timepoint]:checked").val(); 
         let chromosome=$("#chromosome").val(); 
@@ -274,11 +289,13 @@
 
       $("#summary-table").empty();
 
-      let title = `<h3>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h3>`
-      $("#summary-table").append(title);
 
       if(data!=""){
         $("#summary-table").append(`<p>Number of peaks found: ${data.length} peaks</p>`);
+
+        // NEED TO CHANGE TIMEPOINT TO DIFFERENTION OR PROLIFERATION
+        let title = `<h3>Table of peaks from ${timepoint} at chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h3>`
+        $("#summary-table").append(title);
 
         for (let i = 0; i < data.length; i++){
           cell_line=data[i][0]; 
@@ -293,28 +310,31 @@
           table_body_contents += `<tr><td>${cell_line}</td><td>${replicate}</td><td>${start}</td><td>${end}</td><td>${abs_summit}</td><td>${fold_enrichment}</td><td>${pvalue}</td></tr>`
         }
 
-        let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>Stop</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>pvalue</th></tr></thead><tbody>${table_body_contents}</tbody></table>`
+        let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>Stop</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>pvalue (-log(pvalue))</th></tr></thead><tbody>${table_body_contents}</tbody></table>`
         
         $("#summary-table").append(table);
       }
     }
 
+    function slider_set_vals(data){
+
+    }
 
     //Focus on how to take text input from user and put in slider
-    $( function() {
-      $( "#position-slider" ).slider({
-        range: true,
-        min: 3193259,
-        max: 197108607,
-        values: [ 4000000, 180000000 ],
-        slide: function( event, ui ) {
-          $("#start-position" ).val(ui.values[0]);
-          $("#stop-position").val(ui.values[1]); 
-        }
-      });
-      $("#start-position").val($( "#position-slider" ).slider( "values", 0 ));  
-      $("#stop-position").val($( "#position-slider" ).slider( "values", 1));  
-    });
+    // $( function() {
+    //   $( "#position-slider" ).slider({
+    //     range: true,
+    //     min: 3193259,
+    //     max: 197108607,
+    //     values: [ 4000000, 180000000 ],
+    //     slide: function( event, ui ) {
+    //       $("#start-position" ).val(ui.values[0]);
+    //       $("#stop-position").val(ui.values[1]); 
+    //     }
+    //   });
+    //   $("#start-position").val($( "#position-slider" ).slider( "values", 0 ));  
+    //   $("#stop-position").val($( "#position-slider" ).slider( "values", 1));  
+    // });
   </script>
 </body>
 </html>
