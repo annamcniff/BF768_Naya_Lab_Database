@@ -3,7 +3,9 @@
 <head>
   <title>Naya Lab Sequencing Database</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">	
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
   <style>
     * {
       box-sizing: border-box;
@@ -138,10 +140,38 @@
   <div class="row">
     <div class="side">
       <h2>Input Data</h2>
-      <p>this is side bar</p>
+      Timepoint: <input type="radio" id="Proliferation" name="timepoint" value="1" checked="checked"> Proliferation
+      <input type="radio" id="Differentiation" name="timepoint" value="2"> Differentiation
+      <p></p>
+      <label for="chromosome">Choose a Chromosome:</label>
+      <select id="chromosome">
+        <option value="chr1">1</option>
+        <option value="chr2">2</option>
+        <option value="chr3">3</option>
+        <option value="chr4">4</option>
+        <option value="chr5">5</option>
+        <option value="chr6">6</option>
+        <option value="chr7">7</option>
+        <option value="chr8">8</option>
+        <option value="chr9">9</option>
+        <option value="chr10">10</option>
+        <option value="chr11">11</option>
+        <option value="chr12">12</option>
+        <option value="chr13">13</option>
+        <option value="chr14">14</option>
+        <option value="chr15">15</option>
+        <option value="chr16">16</option>
+        <option value="chr17">17</option>
+        <option value="chr18">18</option>
+        <option value="chr19">19</option>
+        <option value="chr20">20</option>
+        <option value="chrX">X</option>
+        <option value="chrY">Y</option>
+      </select> 
+      <p><button id="peakvisual">Plot Peaks</button></p>
     </div>
     <div class="main">
-        <p>This is main</p>
+        <div id="peakgraph"></div>
     </div>
   </div>
 
@@ -153,8 +183,56 @@
   </div>
   <script>
     $(document).ready(function(){
-        
+      $("#peakvisual").click(function(){
+        let timepoint=$("input[name=timepoint]:checked").val(); 
+        let chromosome=$("#chromosome").val();
+        $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_peakvisualization.py",
+          {selector:"plotpeaks", timepoint:timepoint, chromosome:chromosome}, 
+          function(rawData){
+            plot_graph(rawData); 
+          }, 
+          "json"
+        ); 
+      }); 
     });
+
+    function plot_graph(rawData) {
+        var x = [];
+        var y = []; 
+        let timepoint=$("input[name=timepoint]:checked").val(); 
+        let chromosome=$("#chromosome").val();
+        let title = `Peak Signaling for ${timepoint} in Chromosome ${chromosome}`; 
+        let xaxis = `Base Pair in ${chromosome}`; 
+         
+        var layout = {
+          title: title, 
+          xaxis: {
+            title: {
+              text: xaxis,
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Signal Value",
+            },
+          }
+        };
+
+        for (let row = 0; row < rawData.length; row++) {
+          x.push(rawData[row][0])
+          y.push(rawData[row][1])
+        }
+
+        var data = [{
+            mode: 'lines',
+            x: x,
+            y: y
+        }]; 
+
+        Plotly.newPlot('peakgraph', data, layout);
+    }
+
+    
   </script>
 
 </body>

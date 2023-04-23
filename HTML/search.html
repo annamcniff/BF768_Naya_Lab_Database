@@ -247,16 +247,16 @@
       //IDEA: Set start position and end position to range of genome before 
       $("#position-slider").slider({
         range: true,
-        min: 3193259,
-        max: 197108607,
-        values: [ 4000000, 180000000 ],
+        min: 300000,
+        max: 200000000,
+        values: [ 50225000, 150075000 ],
         change: function( event, ui ) {
           $("#start-position").val(ui.values[0]);
           $("#stop-position").val(ui.values[1]); 
         }
       });
-      $("#start-position").val($( "#position-slider" ).slider( "values", 0 ));  
-      $("#stop-position").val($( "#position-slider" ).slider( "values", 1));  
+      $("#start-position").val($("#position-slider" ).slider("values", 0 ));  
+      $("#stop-position").val($("#position-slider" ).slider("values", 1));  
       
       $("#summarystats").click(function(){
         let timepoint=$("input[name=timepoint]:checked").val(); 
@@ -316,9 +316,6 @@
       }
     }
 
-    function slider_set_vals(data){
-
-    }
 
     //Focus on how to take text input from user and put in slider
     // $( function() {
