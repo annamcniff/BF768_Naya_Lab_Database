@@ -40,3 +40,19 @@ primary key(sid, cid),
 foreign key(sid) references SAMPLE(sid),
 foreign key(cid) references CHROMOSOME(cid)); 
 
+CREATE TABLE gene(
+gid int not null auto_increment,
+symbol varchar(20) not null,
+cid varchar(5) not null,
+start int not null,
+end int not null,
+primary key(gid),
+foreign key (cid) references CHROMOSOME (cid)
+);
+
+CREATE TABLE gene_set(
+gsid int not null auto_increment,
+description varchar(100),
+primary key(gsid)
+);
+
