@@ -105,6 +105,11 @@
       background: #ddd;
     }
 
+    button {
+      background-color: DodgerBlue; 
+      color: #fff; /* white; */
+    }
+
     /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
     @media screen and (max-width: 700px) {
       .row {   
@@ -168,9 +173,12 @@
         <option value="chrX">X</option>
         <option value="chrY">Y</option>
       </select> 
+      <p>Select Cell Line: <input type="radio" id="Meg3-PRO" name="cell_line" value="2-4" checked="checked">Meg3-PRO
+      <input type="radio" id="Meg3-KO" name="cell_line" value="2-7"> Meg3-KO</p>
       <p><button id="peakvisual">Plot Peaks</button></p>
     </div>
     <div class="main">
+        <h2>Peak Visualization Graph</h2>
         <div id="peakgraph"></div>
     </div>
   </div>
@@ -186,8 +194,9 @@
       $("#peakvisual").click(function(){
         let timepoint=$("input[name=timepoint]:checked").val(); 
         let chromosome=$("#chromosome").val();
+        let cell_line=$("input[name=cell_line]:checked").val(); 
         $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_peakvisualization.py",
-          {selector:"plotpeaks", timepoint:timepoint, chromosome:chromosome}, 
+          {selector:"plotpeaks", timepoint:timepoint, chromosome:chromosome, cell_line:cell_line}, 
           function(rawData){
             plot_graph(rawData); 
           }, 
@@ -199,10 +208,11 @@
     function plot_graph(rawData) {
         var x = [];
         var y = []; 
-        let timepoint=$("input[name=timepoint]:checked").val(); 
-        let chromosome=$("#chromosome").val();
-        let title = `Peak Signaling for ${timepoint} in Chromosome ${chromosome}`; 
-        let xaxis = `Base Pair in ${chromosome}`; 
+        let timepoint=$('input[name=timepoint]:checked').attr('id');
+        let chromosome=$("#chromosome").val().split("chr")[1];
+        let cell_line=$('input[name=cell_line]:checked').attr('id');
+        let title = `Peak Signaling for ${timepoint} in Chromosome ${chromosome} in the ${cell_line} Cell Line`; 
+        let xaxis = `Base Pairs in Chromosome ${chromosome}`; 
          
         var layout = {
           title: title, 
