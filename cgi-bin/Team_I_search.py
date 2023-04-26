@@ -4,6 +4,7 @@ import pymysql
 import cgi
 import cgitb
 import json
+from collections import OrderedDict
 
 cgitb.enable()
 
@@ -24,12 +25,33 @@ if form:
     
     cursor = connection.cursor()
     selector = form.getvalue("selector","")
+    sortby = form.getvalue("sortby", 0)
     timepoint = form.getvalue("timepoint", 0)
     chromosome = form.getvalue("chromosome", "")
     start_pos = form.getvalue("start_pos", 0)
     stop_pos = form.getvalue("stop_pos", 0)
     cell_line = form.getvalue("cell_line", "")
     
+    if (selector == "genetable"): 
+        query = f"""
+        SELECT symbol, description, cid, g.start, g.end, count(distinct pid), max(fold_enrichment)
+        FROM gene g JOIN PEAK p USING (cid)
+            JOIN SAMPLE USING (sid)
+            JOIN gene_set USING (gsid)
+        WHERE abs_summit BETWEEN g.start AND g.end AND timepoint = %s AND cell_line = %s
+        GROUP BY gid 
+        ORDER BY {sortby}
+        """
+
+        try: 
+             cursor.execute(query, [int(timepoint), cell_line])
+        except pymysql.Error as e: 
+            print(e,query)
+        
+        results = cursor.fetchall()
+        print(json.dumps(results))
+
+
     if (selector == "summarytable"):
 
         query1 = """
