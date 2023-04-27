@@ -31,6 +31,7 @@ if form:
     start_pos = form.getvalue("start_pos", 0)
     stop_pos = form.getvalue("stop_pos", 0)
     cell_line = form.getvalue("cell_line", "")
+    replicate = form.getvalue("replicate", "")
     
     if (selector == "genetable"): 
         query = f"""
@@ -69,3 +70,17 @@ if form:
         results = cursor.fetchall()
         print(json.dumps(results))
     
+    if (selector == "igvtable"): 
+        query = """
+        SELECT link
+        FROM SAMPLE 
+        WHERE timepoint = %s AND cell_line = %s AND replicate = %s
+        """
+
+        try: 
+             cursor.execute(query, [int(timepoint), cell_line, replicate])
+        except pymysql.Error as e: 
+            print(e,query)
+        
+        results = cursor.fetchall()
+        print(json.dumps(results))
