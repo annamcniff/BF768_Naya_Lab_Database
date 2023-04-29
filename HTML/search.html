@@ -246,6 +246,7 @@
         <h2>IGV Integration</h2>
         <div id="igv-div"></div>
         <h2>Peaks Table</h2>
+        <div id="csv-div"></div>
         <div id="peak-table"></div>
     </div>
   </div>
@@ -359,6 +360,7 @@
 
         let title = `<h3>Table of peaks from ${timepoint} at Chromosome ${chromosome} from ${start_pos} to ${stop_pos}</h3>`
         $("#peak-table").append(title);
+        
 
         for (let i = 0; i < data.length; i++){
           cell_line=data[i][0]; 
@@ -376,8 +378,73 @@
         let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>Stop</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>-log(pvalue)</th></tr></thead><tbody>${table_body_contents}</tbody></table>`
         
         $("#peak-table").append(table);
+        $("#csv-div").append(`<br><button class="button" id='download' onclick="download_csv()" style="height:60px; width:100px;">Download CSV</button>`);
       }
     }
+    function download_csv() {
+        // Variable to store the final csv data
+        var csv_data = [];
+
+        // Get each row data
+        const table = document.getElementById('peak-table');
+        var rows = table.getElementsByTagName('tr');
+        var headerCols = rows[0].querySelectorAll('th');
+
+        var csvrow = [];
+        for (let j = 0; j < headerCols.length; j++) {
+
+          // Get the text data of each cell of
+          // a row and push it to csvrow
+          csvrow.push(headerCols[j].innerText);
+        }
+        csv_data.push(csvrow.join(","));
+
+        for (var i = 1; i < rows.length; i++) {
+
+          // Get each column data
+          var cols = rows[i].querySelectorAll('td');
+          csvrow = [];
+
+          // Stores each csv row data
+          for (var j = 0; j < cols.length; j++) {
+
+            // Get the text data of each cell of
+            // a row and push it to csvrow
+            csvrow.push(cols[j].innerText);
+          }
+
+          // Combine each column value with comma
+          csv_data.push(csvrow.join(","));
+        }
+        // combine each row data with new line character
+        csv_data = csv_data.join('\n');
+
+        /* We will use this function later to download
+        the data in a csv file downloadCSVFile(csv_data);
+        */
+
+        // Create CSV file object and feed our
+        // csv_data into it
+        CSVFile = new Blob([csv_data], { type: "text/csv" });
+
+        // Create to temporary link to initiate
+        // download process
+        var temp_link = document.createElement('a');
+
+        // Download csv file
+        temp_link.download = "peak_table.csv";
+        var url = window.URL.createObjectURL(CSVFile);
+        temp_link.href = url;
+
+        // This link should not be displayed
+        temp_link.style.display = "none";
+        document.body.appendChild(temp_link);
+
+        // Automatically click the link to trigger download
+        temp_link.click();
+        document.body.removeChild(temp_link);
+      }
+
 
 
     //Focus on how to take text input from user and put in slider
@@ -398,5 +465,4 @@
   </script>
 </body>
 </html>
-
 
