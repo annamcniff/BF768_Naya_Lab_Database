@@ -311,9 +311,14 @@
       let timepoint=$('input[name=timepoint2]:checked').attr('id').split("_")[0];
       let cell_line=$("input[name=cell_line2]:checked").val(); 
       let replicate=$("input[name=replicate]:checked").val(); 
+
       let search = chromosome + ":" + start_pos + "-" + stop_pos; 
       let name = cell_line + " " + timepoint + " in " + chromosome; 
+
+      $("#igv-div").empty();
+
       var igvDiv = document.getElementById("igv-div");
+
       var options =
         {
             genome: "mm9",
