@@ -233,6 +233,16 @@
         <p>Start: <input type="text" id="start-position">
         Stop: <input type="text" id="stop-position"></p>
         <div id="position-slider"></div>
+        <p></p>
+        <label for="sortby2">Sort By:</label>
+        <select id="sortby2">
+          <option value="replicate">Replicate</option>
+          <option value="start">Start</option>
+          <option value="end">Stop</option>
+          <option value="abs_summit">Absolute Summit</option>
+          <option value="fold_enrichment"> Fold Enrichment</option>
+          <option value="pvalue">-log(p-value)</option>
+        </select>
         <p><button id="summarystats">Produce Summary Statistics</button></p>
         <h3>Explore Peaks in IGV</h3>
         <p>Uses inputs from above to show peaks in specified region</p>
@@ -247,7 +257,7 @@
         <div id="igv-title"></div>
         <div id="igv-div"></div>
         <div id="peak-title"></div>
-        <div id="csv-div"></div>
+        <p><div id="csv-div"></div></p>
         <div id="peak-table"></div>
     </div>
   </div>
@@ -282,8 +292,9 @@
         let start_pos=$("#start-position").val(); 
         let stop_pos=$("#stop-position").val(); 
         let cell_line=$("input[name=cell_line2]:checked").val(); 
+        let sortby=$("#sortby2").val(); 
         $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_search.py", 
-          {selector:"summarytable", timepoint:timepoint, chromosome:chromosome, start_pos:start_pos, stop_pos:stop_pos, cell_line:cell_line}, 
+          {selector:"summarytable", timepoint:timepoint, chromosome:chromosome, start_pos:start_pos, stop_pos:stop_pos, cell_line:cell_line, sortby:sortby}, 
           function(data){
             create_peak_table(data); 
           }, 
@@ -384,6 +395,7 @@
         let table=`<table><thead><tr><th>Cell Line</th><th>Replicate</th><th>Start</th><th>Stop</th><th>Absolute Summit</th><th>Fold Enrichment</th><th>-log(pvalue)</th></tr></thead><tbody>${table_body_contents}</tbody></table>`
         
         $("#peak-table").append(table);
+        $("#csv-div").empty();
         $("#csv-div").append(`<br><button class="button" id='download' onclick="download_csv()" style="height:60px; width:100px;">Download CSV</button>`);
       }
     }

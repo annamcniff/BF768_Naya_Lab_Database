@@ -217,7 +217,7 @@
     </div>
     <div class="main">
         <div id="gene-title"></div>
-        <div id="csv-div"></div>
+        <p><div id="csv-div"></div></p>
         <div id="gene-overview"></div>
     </div>
   </div>
@@ -291,6 +291,7 @@
         let table=`<table><thead><tr><th>Gene Symbol</th><th>Gene Set</th><th>Chromosome</th><th>Start</th><th>Stop</th><th>Number of Peaks</th><th>Fold Enrichment</th></tr></thead><tbody>${table_body_contents}</tbody></table>`
         
         $("#gene-overview").append(table);
+        $("#csv-div").empty(); 
         $("#csv-div").append(`<br><button class="button" id='download' onclick="download_csv()" style="height:60px; width:100px;">Download CSV</button>`);
       }
 

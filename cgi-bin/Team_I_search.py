@@ -55,11 +55,11 @@ if form:
 
     if (selector == "summarytable"):
 
-        query1 = """
+        query1 = f"""
         SELECT cell_line, replicate, start, end, abs_summit, fold_enrichment, pvalue
         FROM PEAK JOIN SAMPLE USING (sid) 
         WHERE timepoint = %s AND cid= %s AND start > %s AND end < %s AND cell_line = %s
-        ORDER BY start;
+        ORDER BY {sortby};
         """
 
         try: 
