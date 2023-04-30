@@ -64,6 +64,14 @@
       color: white;
     }
 
+    /* Main column */
+    .main {   
+      -ms-flex: 70%; /* IE10 */
+      flex: 70%;
+      background-color: white;
+      padding: 20px;
+    }
+
     /* Style inputs */
     input[type=text], select, textarea {
       width: 100%;
@@ -164,43 +172,33 @@
 <body>
 
   <div class="header">
-    <h1>Sequencing Database</h1>
+    <h1>ATAC Sequencing of Meg3 Gene</h1>
     <p>A <b>database</b> for the Naya Lab</p>
   </div>
   
   <div class="navbar">
     <a href="homepage.html" class="active">Home</a>
+    <a href="Meg3.html">Research Focus</a>
+    <a href ="Sample_statistics.html"> Sample Statistics</a>
     <a href="search.html">Search Peaks</a>
     <a href="summary.html">Gene Summary</a>
     <a href="peakvisualization.html">Peak Visualization</a>
     <a href="igbpage.html">IGB Integration</a>
-    <a href="Meg3.html">Research Focus</a>
     <a href="contact.html">Contact Us</a>
   </div>
-  
 
-  <div class="container">
-    <div style="text-align:left">
-      <h2>Contact Us</h2>
-    
-      <p>For questions about our research, you can contact:
-          <p>Dr. Naya PhD fnaya@bu.edu 
-        <p> Amanda Pinheiro PhD candidate amandaep@bu.edu
-        <p> ___________________________________________         
-</p>
-    <p> Dr. Naya's lab is located in the Biology Department of Boston University Arts & Sciences:
-<p>5 Cummington Mall, Boston, MA 02215
-    <p>Phone: 617-353-2432
-        <p>Fax: 617-353-6340 
-        </p>
-    </div>
-      <div align="right">
-        <img src="https://bioed.bu.edu/students_23/Team_I/dnapic.jpg" style="width:100%">
-      </div>
-      
-      </div>
-   
-
+  <div class="main">
+    <h2>Contact Us</h2>
+    <p>For questions about our research, you can contact:</p>
+    <p>Dr. Naya PhD fnaya@bu.edu </p>
+    <p> Amanda Pinheiro PhD candidate amandaep@bu.edu</p>
+    <h2>Located in</h2>
+    <p> Dr. Naya's lab is located in the Biology Department of Boston University Arts & Sciences:</p>
+    <p>5 Cummington Mall, Boston, MA 02215</p> 
+    <p>Phone: 617-353-2432</p>
+    <p>Fax: 617-353-6340 </p>
+  </div>
+     
   <div class="footer">
     <p>This project was developed at Boston University as
       part of BF768, Spring 2023, G. Benson instructor </p>

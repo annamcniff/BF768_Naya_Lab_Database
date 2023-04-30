@@ -181,17 +181,18 @@
 <body>
 
   <div class="header">
-    <h1>Sequencing Database</h1>
+    <h1>ATAC Sequencing of Meg3 Gene</h1>
     <p>A <b>database</b> for the Naya Lab</p>
   </div>
 
   <div class="navbar">
     <a href="homepage.html" class="active">Home</a>
+    <a href="Meg3.html">Research Focus</a>
+    <a href ="Sample_statistics.html"> Sample Statistics</a>
     <a href="search.html">Search Peaks</a>
     <a href="summary.html">Gene Summary</a>
     <a href="peakvisualization.html">Peak Visualization</a>
     <a href="igbpage.html">IGB Integration</a>
-    <a href="Meg3.html">Research Focus</a>
     <a href="contact.html">Contact Us</a>
   </div>
 
@@ -382,65 +383,39 @@
       }
     }
     function download_csv() {
-        // Variable to store the final csv data
         var csv_data = [];
 
-        // Get each row data
         const table = document.getElementById('peak-table');
         var rows = table.getElementsByTagName('tr');
         var headerCols = rows[0].querySelectorAll('th');
 
         var csvrow = [];
         for (let j = 0; j < headerCols.length; j++) {
-
-          // Get the text data of each cell of
-          // a row and push it to csvrow
           csvrow.push(headerCols[j].innerText);
         }
         csv_data.push(csvrow.join(","));
 
         for (var i = 1; i < rows.length; i++) {
-
-          // Get each column data
           var cols = rows[i].querySelectorAll('td');
           csvrow = [];
-
-          // Stores each csv row data
           for (var j = 0; j < cols.length; j++) {
-
-            // Get the text data of each cell of
-            // a row and push it to csvrow
             csvrow.push(cols[j].innerText);
           }
 
-          // Combine each column value with comma
           csv_data.push(csvrow.join(","));
         }
-        // combine each row data with new line character
         csv_data = csv_data.join('\n');
-
-        /* We will use this function later to download
-        the data in a csv file downloadCSVFile(csv_data);
-        */
-
-        // Create CSV file object and feed our
-        // csv_data into it
         CSVFile = new Blob([csv_data], { type: "text/csv" });
 
-        // Create to temporary link to initiate
-        // download process
         var temp_link = document.createElement('a');
 
-        // Download csv file
         temp_link.download = "peak_table.csv";
         var url = window.URL.createObjectURL(CSVFile);
         temp_link.href = url;
 
-        // This link should not be displayed
         temp_link.style.display = "none";
         document.body.appendChild(temp_link);
 
-        // Automatically click the link to trigger download
         temp_link.click();
         document.body.removeChild(temp_link);
       }
