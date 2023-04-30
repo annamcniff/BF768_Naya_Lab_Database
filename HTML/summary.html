@@ -216,7 +216,7 @@
         <p><button id="geneoverlap">Produce Gene and Peak Overlap Table</button></p>
     </div>
     <div class="main">
-        <h2>Gene and Peak Overlap</h2>
+        <div id="gene-title"></div>
         <div id="csv-div"></div>
         <div id="gene-overview"></div>
     </div>
@@ -271,7 +271,9 @@
       let fold_enrichment = ""; 
 
       $("#gene-overview").empty();
-
+      $("#gene-title").empty();
+      $("#gene-title").append(`<h2>Gene and Peak Overlap</h2>`);
+        
       if(data != ""){
         for (let i = 0; i < data.length; i++){
           symbol = data[i][0]; 

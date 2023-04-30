@@ -234,7 +234,7 @@
         Stop: <input type="text" id="stop-position"></p>
         <div id="position-slider"></div>
         <p><button id="summarystats">Produce Summary Statistics</button></p>
-        <h3>Explore Peaks in Genome Browser</h3>
+        <h3>Explore Peaks in IGV</h3>
         <p>Uses inputs from above to show peaks in specified region</p>
         <p>Choose Replicate: <input type="radio" id="A" name="replicate" value="A" checked="checked"> A
         <input type="radio" id="B" name="replicate" value="B"> B
@@ -244,9 +244,9 @@
         <input type="radio" id="Meg3-KO" name="sort" value="2-7"> Meg3-KO</p> -->
     </div>
     <div class="main">
-        <h2>Genome Browser Integration</h2>
+        <div id="igv-title"></div>
         <div id="igv-div"></div>
-        <h2>Peaks Table</h2>
+        <div id="peak-title"></div>
         <div id="csv-div"></div>
         <div id="peak-table"></div>
     </div>
@@ -318,6 +318,8 @@
       let name = cell_line + " " + timepoint + " in " + chromosome; 
 
       $("#igv-div").empty();
+      $("#igv-title").empty();
+      $("#igv-title").append(`<h2>Examine Peaks in IGV</h2>`);
 
       var igvDiv = document.getElementById("igv-div");
 
@@ -355,6 +357,9 @@
       let pvalue=""
 
       $("#peak-table").empty();
+      $("#peak-title").empty();
+      $("#peak-title").append(`<h2>Peaks Table</h2>`);
+      
 
       if(data!=""){
         $("#stats-overview").append(`<p>Number of peaks found: ${data.length} peaks</p>`);
@@ -382,6 +387,7 @@
         $("#csv-div").append(`<br><button class="button" id='download' onclick="download_csv()" style="height:60px; width:100px;">Download CSV</button>`);
       }
     }
+
     function download_csv() {
         var csv_data = [];
 
