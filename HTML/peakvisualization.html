@@ -205,6 +205,15 @@
           "json"
         ); 
       }); 
+       $("#igb-button").click(function(){
+        let timepoint=$("input[name=timepoint]:checked").val(); 
+        let chromosome=$("#chromosome").val();
+        let cell_line=$("input[name=cell_line]:checked").val(); 
+        $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_peakvisualization.py",
+          {selector:"igb-button", timepoint:timepoint, chromosome:chromosome, cell_line:cell_line}, 
+          {
+            makelink(); 
+          }, 
     });
 
     function plot_graph(rawData) {
@@ -243,6 +252,27 @@
 
         Plotly.newPlot('peakgraph', data, layout);
     }
+   function makelink(){
+        let timepoint=$('input[name=timepoint]:checked').attr('id');
+        let chromosome=$("#chromosome").val().split("chr")[1];
+        let cell_line=$('input[name=cell_line]:checked').attr('id');
+        var link=[]
+        var url =[]
+        link=http://genome.ucsc.edu/cgi-bin/hgTracks?org=mm9&position=
+        link = link + chromosome
+        link = link + &hgt.customText=
+        if (cell_line == ___){
+          if(timepoint== ___) {
+          
+          }
+          else{
+          }
+        }
+        else{
+          
+        }
+   
+   }
 
     
   </script>
