@@ -43,10 +43,6 @@ if form:
         
         results = cursor.fetchall()
         print(json.dumps(results))
-    if (selector == "igb-button"): 
-       # chromosome
-       # get chr, cell line and timepoint - this tells what track to load bc you can only load 1 custom at a time like this 
-     #   http://genome.ucsc.edu/cgi-bin/hgTracks?org=mm9&position=<chrPosition>&hgt.customText=<url>
-        
+  
 
     
