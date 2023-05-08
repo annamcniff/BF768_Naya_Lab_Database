@@ -178,11 +178,11 @@
       <p>Select Cell Line: <input type="radio" id="Meg3-PRO" name="cell_line" value="2-4" checked="checked">Meg3-PRO
       <input type="radio" id="Meg3-KO" name="cell_line" value="2-7"> Meg3-KO</p>
       <p><button id="peakvisual">Plot Peaks</button></p>
-      <p><button id="igb-button">Produce IGB</button></p>
     </div>
     <div class="main">
         <h2>Peak Visualization Graph</h2>
         <div id="peakgraph"></div>
+        <div id="gb_button"></div>
     </div>
   </div>
 
@@ -207,6 +207,23 @@
         ); 
       }); 
     });
+    $(document).ready(function(){
+    $("#peakvisual").click(function(){
+      let timepoint = $("input[name='timepoint']:checked").val(); 
+      let chromosome = $("#chromosome").val();
+      let cell_line = $("input[name='cell_line']:checked").val(); 
+      $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_peakvisualization.py",
+        {selector:"plotpeaks", timepoint:timepoint, chromosome:chromosome, cell_line:cell_line}, 
+        function(rawData){
+          plot_graph(rawData); 
+          let url = generateLink();
+          let linkButton = $("<a>").attr("href", url).text("View in Genome Browser");
+          $("#gb_button").empty().append(linkButton);
+        }, 
+        "json"
+      ); 
+    }); 
+  });
 
     function plot_graph(rawData) {
         var x = [];
@@ -230,6 +247,16 @@
             },
           }
         };
+        function generateLink() {
+          let timepoint = $("input[name='timepoint']:checked").val();
+          let chromosome = $("#chromosome").val();
+          let cell_line = $("input[name='cell_line']:checked").val();
+          let url = "https://example.com/peaks?";
+          url += "timepoint=" + timepoint + "&";
+          url += "chromosome=" + chromosome + "&";
+          url += "cell_line=" + cell_line;
+          return url;
+  }
 
         for (let row = 0; row < rawData.length; row++) {
           x.push(rawData[row][0])
