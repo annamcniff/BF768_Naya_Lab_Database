@@ -251,10 +251,32 @@
           let timepoint = $("input[name='timepoint']:checked").val();
           let chromosome = $("#chromosome").val();
           let cell_line = $("input[name='cell_line']:checked").val();
-          let url = "https://example.com/peaks?";
-          url += "timepoint=" + timepoint + "&";
-          url += "chromosome=" + chromosome + "&";
-          url += "cell_line=" + cell_line;
+          if (cell_line == "Meg3-PRO"){
+            if(timepoint== "Proliferation") {
+              let url ="https://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=";
+              url = url+chromosome;
+              url = url+"%3A1%2D121257530&hgsid=1621502637_dyNicTgglHBlJ150mVonPlxV4DZ0";
+              }
+            else{
+            let url ="https://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=";
+            url = url+chromosome;
+            url = url+"%3A1%2D121257530&hgsid=1621501647_ULBktnWCs0RDa1yfaE6vAr32LVKK";
+            }
+          
+          }
+         if (cell_line =="Meg3-KO"){
+           if (timepoint== "Proliferation") {
+            let url ="https://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=:";
+            url = url+chromosome;
+            url = url+"%3A1%2D121257530&hgsid=1621505131_IIctfiPjzcsnkjnUMPrGXhhgzXqZ";
+            }
+           else{
+            let url ="https://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=";
+            url = url+chromosome;
+            url = url+"%3A1%2D121257530&hgsid=1621503881_yWFSBiexeJ8C6Ske5dJ4KaL2Qtvb";
+             
+           }
+         }
           return url;
   }
 
