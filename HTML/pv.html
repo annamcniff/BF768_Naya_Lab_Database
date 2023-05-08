@@ -178,6 +178,7 @@
       <p>Select Cell Line: <input type="radio" id="Meg3-PRO" name="cell_line" value="2-4" checked="checked">Meg3-PRO
       <input type="radio" id="Meg3-KO" name="cell_line" value="2-7"> Meg3-KO</p>
       <p><button id="peakvisual">Plot Peaks</button></p>
+      <button id="browserButton" style="display:none" onclick="openGenomeBrowser()">Open in Genome Browser</button>
     </div>
     <div class="main">
         <h2>Peak Visualization Graph</h2>
@@ -206,6 +207,7 @@
           let url = generateLink();
           let linkButton = $("<a>").attr("href", url).text("View in Genome Browser");
           $("#gb_button").empty().append(linkButton);
+        $('#browserButton').show();
         }, 
         "json"
       ); 
@@ -234,6 +236,7 @@
             },
           }
         };
+      
         function generateLink() {
           let timepoint = $("input[name='timepoint']:checked").val();
           let chromosome = $("#chromosome").val();
@@ -266,6 +269,10 @@
          }
           return url;
   }
+      function openGenomeBrowser() {
+        var browserURL =generateLink()
+        window.open(browserURL, "_blank");
+      }
 
         for (let row = 0; row < rawData.length; row++) {
           x.push(rawData[row][0])
