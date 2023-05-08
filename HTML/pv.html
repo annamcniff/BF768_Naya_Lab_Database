@@ -194,20 +194,6 @@
   </div>
   <script>
     $(document).ready(function(){
-      $("#peakvisual").click(function(){
-        let timepoint=$("input[name=timepoint]:checked").val(); 
-        let chromosome=$("#chromosome").val();
-        let cell_line=$("input[name=cell_line]:checked").val(); 
-        $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_peakvisualization.py",
-          {selector:"plotpeaks", timepoint:timepoint, chromosome:chromosome, cell_line:cell_line}, 
-          function(rawData){
-            plot_graph(rawData); 
-          }, 
-          "json"
-        ); 
-      }); 
-    });
-    $(document).ready(function(){
     $("#peakvisual").click(function(){
       let timepoint = $("input[name='timepoint']:checked").val(); 
       let chromosome = $("#chromosome").val();
