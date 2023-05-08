@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Naya Lab Sequencing Database</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">	
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Style the body */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+    }
+
+    /* Header/logo Title */
+    .header {
+      padding: 2px;
+      text-align: center;
+      background: #6495ED;
+      color: White;
+    }
+
+    /* Increase the font size of the heading */
+    .header h1 {
+      font-size: 30px;
+    }
+
+    /* Sticky navbar - toggles between relative and fixed, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed). The sticky value is not supported in IE or Edge 15 and earlier versions. However, for these versions the navbar will inherit default position */
+    .navbar {
+      overflow: hidden;
+      background-color: #333;
+      position: sticky;
+      position: -webkit-sticky;
+      top: 0;
+    }
+
+    /* Style the navigation bar links */
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+
+
+    /* Right-aligned link */
+    .navbar a.right {
+      float: right;
+    }
+
+    /* Change color on hover */
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Active/current link */
+    .navbar a.active {
+      background-color: #666;
+      color: white;
+    }
+
+    /* Column container */
+    .row {  
+      display: -ms-flexbox; /* IE10 */
+      display: flex;
+      -ms-flex-wrap: wrap; /* IE10 */
+      flex-wrap: wrap;
+    }
+
+    /* Create two unequal columns that sits next to each other */
+    /* Sidebar/left column */
+    .side {
+      -ms-flex: 30%; /* IE10 */
+      flex: 30%;
+      background-color: #f1f1f1;
+      padding: 20px;
+    }
+
+    /* Main column */
+    .main {   
+      -ms-flex: 70%; /* IE10 */
+      flex: 70%;
+      background-color: white;
+      padding: 20px;
+    }
+
+    /* Fake image, just for this example */
+    .img {
+      width: 100%;
+      padding: 20px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 5px;
+      text-align: center;
+      background: #ddd;
+    }
+
+    button {
+      background-color: DodgerBlue; 
+      color: #fff; /* white; */
+    }
+
+    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 700px) {
+      .row {   
+        flex-direction: column;
+      }
+    }
+
+    /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+    @media screen and (max-width: 400px) {
+      .navbar a {
+        float: none;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>NASCARdb</h1>
+    <h2>Naya Lab ATAC-seq and CUT&RUN Sequencing Database</h2>
+  </div>
+
+  <div class="navbar">
+    <a href="homepage.html">Home</a>
+    <a href="research_focus.html">Research Focus</a>
+    <a href="sample_statistics.html">Sample Statistics</a>
+    <a href="search.html">Search Peaks</a>
+    <a href="summary.html">Gene Summary</a>
+    <a href="peakvisualization.html" class="active">Peak Visualization</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="help.html">Help</a>
+  </div>
+
+  <div class="row">
+    <div class="side">
+      <h2>Input Data</h2>
+      Timepoint: <input type="radio" id="Proliferation" name="timepoint" value="1" checked="checked"> Proliferation
+      <input type="radio" id="Differentiation" name="timepoint" value="2"> Differentiation
+      <p></p>
+      <label for="chromosome">Choose a Chromosome:</label>
+      <select id="chromosome">
+        <option value="chr1">1</option>
+        <option value="chr2">2</option>
+        <option value="chr3">3</option>
+        <option value="chr4">4</option>
+        <option value="chr5">5</option>
+        <option value="chr6">6</option>
+        <option value="chr7">7</option>
+        <option value="chr8">8</option>
+        <option value="chr9">9</option>
+        <option value="chr10">10</option>
+        <option value="chr11">11</option>
+        <option value="chr12">12</option>
+        <option value="chr13">13</option>
+        <option value="chr14">14</option>
+        <option value="chr15">15</option>
+        <option value="chr16">16</option>
+        <option value="chr17">17</option>
+        <option value="chr18">18</option>
+        <option value="chr19">19</option>
+        <option value="chr20">20</option>
+        <option value="chrX">X</option>
+        <option value="chrY">Y</option>
+      </select> 
+      <p>Select Cell Line: <input type="radio" id="Meg3-PRO" name="cell_line" value="2-4" checked="checked">Meg3-PRO
+      <input type="radio" id="Meg3-KO" name="cell_line" value="2-7"> Meg3-KO</p>
+      <p><button id="peakvisual">Plot Peaks</button></p>
+      <p><button id="igb-button">Produce IGB</button></p>
+    </div>
+    <div class="main">
+        <h2>Peak Visualization Graph</h2>
+        <div id="peakgraph"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>This project was developed at Boston University as
+      part of BF768, Spring 2023, G. Benson instructor </p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Boston_University_wordmark.svg/1000px-Boston_University_wordmark.svg.png?20200623211014" alt="H" width="120" height="50">
+    <p>Last revised May 8, 2023</p>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $("#peakvisual").click(function(){
+        let timepoint=$("input[name=timepoint]:checked").val(); 
+        let chromosome=$("#chromosome").val();
+        let cell_line=$("input[name=cell_line]:checked").val(); 
+        $.get("https://bioed.bu.edu/cgi-bin/students_23/Team_I/Team_I_peakvisualization.py",
+          {selector:"plotpeaks", timepoint:timepoint, chromosome:chromosome, cell_line:cell_line}, 
+          function(rawData){
+            plot_graph(rawData); 
+          }, 
+          "json"
+        ); 
+      }); 
+    });
+
+    function plot_graph(rawData) {
+        var x = [];
+        var y = []; 
+        let timepoint=$('input[name=timepoint]:checked').attr('id');
+        let chromosome=$("#chromosome").val().split("chr")[1];
+        let cell_line=$('input[name=cell_line]:checked').attr('id');
+        let title = `Peak Signaling for ${timepoint} in Chromosome ${chromosome} in the ${cell_line} Cell Line`; 
+        let xaxis = `Base Pairs in Chromosome ${chromosome}`; 
+         
+        var layout = {
+          title: title, 
+          xaxis: {
+            title: {
+              text: xaxis,
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Signal Value",
+            },
+          }
+        };
+
+        for (let row = 0; row < rawData.length; row++) {
+          x.push(rawData[row][0])
+          y.push(rawData[row][1])
+        }
+
+        var data = [{
+            mode: 'lines',
+            x: x,
+            y: y
+        }]; 
+
+        Plotly.newPlot('peakgraph', data, layout);
+    }
+
+    
+  </script>
+
+</body>
+</html>
